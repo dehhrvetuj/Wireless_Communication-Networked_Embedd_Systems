@@ -12,6 +12,8 @@
 #include <string.h>
 #include "printf.h"
 
+#define LOW_LEVEL -30000
+
 
 module T1C @safe()
 {
@@ -28,9 +30,9 @@ module T1C @safe()
 
 implementation
 {
-   int16_t lastTemp = -3000;
-   int16_t currentTemp = -3000;
-   int16_t ALARM_LEVEL = 2200;
+   int16_t lastTemp =  LOW_LEVEL-1;
+   int16_t currentTemp =  LOW_LEVEL - 1;
+   int16_t ALARM_LEVEL = 2300;
    
     event void Boot.booted() 
     {
@@ -42,7 +44,7 @@ implementation
 	{
 		if(call Temperature.read() == SUCCESS) //If temperature read was successful
 		{
-			/*call Leds.led2Toggle();*/
+		/*	call Leds.led2Toggle();*/
 		}
 		else
 		{
@@ -56,7 +58,7 @@ implementation
 		{
          currentTemp = -3960 + ((int16_t) data);
          
-         if (lastTemp < -2800)
+         if (lastTemp <= LOW_LEVEL)
          {
             lastTemp = currentTemp;
          }
@@ -83,8 +85,8 @@ implementation
             }
             else
             {
-               call Leds.led0Off();
-               call Leds.led1Off(); 
+               /*call Leds.led0Off();
+               call Leds.led1Off(); */
             }
             
             lastTemp = currentTemp;
